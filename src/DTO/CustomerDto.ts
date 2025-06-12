@@ -14,6 +14,8 @@ export class CustomerDTO {
     /** ID do barbeiro/usuário responsável pelo cliente */
     userId?: string;
     /** Dados do barbeiro/usuário responsável */
+
+    email?: string;
     user?: UserDTO;
     //appointments: AppointmentDto[];
     //fidelity: FidelityDto;

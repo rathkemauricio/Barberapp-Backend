@@ -77,7 +77,7 @@ export async function addPoints(customerId: string, points: number): Promise<Fid
  * @param customerId ID do cliente
  * @throws Error se o cliente não tiver programa de fidelidade
  */
-export async function getFidelityDetails(customerId: string): Promise<FidelityResponseDTO> {
+export async function getFidelityDetails(customerId: string): Promise<FidelityDTO> {
     const fidelity = await prisma.fidelity.findUnique({
         where: { customerId },
         include: includeCustomer
@@ -86,7 +86,7 @@ export async function getFidelityDetails(customerId: string): Promise<FidelityRe
         throw new Error('Fidelidade não encontrada');
     }
     const metrics = calculateFidelityMetrics(fidelity.points);
-    return { ...fidelity, ...metrics };
+    return { fidelity: fidelity, metrics: metrics };
 }
 
 /**

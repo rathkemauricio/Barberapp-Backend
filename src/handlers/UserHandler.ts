@@ -3,6 +3,7 @@ import { hash, compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { UserDTO } from "../DTO/UserDto";
 import { UserValidator } from "../validators/UserValidator";
+import { Role } from "../enums/Role";
 
 const validator = new UserValidator();
 
@@ -13,7 +14,8 @@ const validator = new UserValidator();
 const userSelect = {
     id: true,
     name: true,
-    email: true
+    email: true,
+    role: true
 };
 
 /**
@@ -33,9 +35,10 @@ export async function createUser(userData: UserDTO): Promise<UserDTO> {
     const passwordHash = await hash(userData.password!, 8);
     return await prisma.user.create({
         data: {
-            name: userData.name,
-            email: userData.email,
+            name: userData.name!,
+            email: userData.email!,
             password: passwordHash,
+            role: userData.role || Role.CUSTOMER,
         },
         select: userSelect
     });
@@ -59,7 +62,7 @@ export async function authenticateUser(userData: UserDTO): Promise<UserDTO> {
     if (!passwordMatch) throw new Error("Usuário ou senha incorretos");
 
     const token = sign(
-        { name: user.name, email: user.email },
+        { name: user.name, email: user.email, role: user.role },
         process.env.JWT_SECRET as string,
         { subject: user.id, expiresIn: "30d" }
     );
@@ -68,6 +71,7 @@ export async function authenticateUser(userData: UserDTO): Promise<UserDTO> {
         id: user.id,
         name: user.name,
         email: user.email,
+        role: user.role,
         token
     };
 }

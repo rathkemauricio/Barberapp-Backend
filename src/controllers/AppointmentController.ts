@@ -9,7 +9,7 @@ import { Post, Get, Put, Delete } from "../decorators/Route";
 export class AppointmentController extends BaseController {
     // Endpoint para criar um novo agendamento
     // Requer autenticação
-    @Post('/appointments', isAuthenticated)
+    @Post('/appointments')
     async create(req: ExpressRequest, res: Response) {
         try {
             const appointmentData = req.body as AppointmentDTO;
@@ -28,7 +28,7 @@ export class AppointmentController extends BaseController {
 
     // Endpoint para obter detalhes de um agendamento específico pelo ID
     // Requer autenticação
-    @Get('/appointments', isAuthenticated)
+    @Get('/appointments')
     async getDetails(req: ExpressRequest, res: Response) {
         const appointmentId = req.query.appointmentId as string;
         if (!appointmentId) {
@@ -40,7 +40,7 @@ export class AppointmentController extends BaseController {
 
     // Endpoint para listar todos os agendamentos do barbeiro logado
     // Requer autenticação
-    @Get('/appointments/list', isAuthenticated)
+    @Get('/appointments/list')
     async list(req: ExpressRequest, res: Response) {
         const appointments = await listAppointments(this.getCurrentUser(req).id);
         this.sendResponse(res, appointments);
@@ -48,7 +48,7 @@ export class AppointmentController extends BaseController {
 
     // Endpoint para atualizar um agendamento existente pelo ID
     // Requer autenticação
-    @Put('/appointments', isAuthenticated)
+    @Put('/appointments')
     async update(req: ExpressRequest, res: Response) {
         try {
             const appointmentId = req.query.appointmentId as string;
@@ -72,7 +72,7 @@ export class AppointmentController extends BaseController {
 
     // Endpoint para deletar um agendamento pelo ID
     // Requer autenticação
-    @Delete('/appointments', isAuthenticated)
+    @Delete('/appointments')
     async delete(req: ExpressRequest, res: Response) {
         const appointmentId = req.query.appointmentId as string;
         if (!appointmentId) {

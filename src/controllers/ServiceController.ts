@@ -29,7 +29,7 @@ export class ServiceController extends BaseController {
 
     // Endpoint para listar todos os serviços
     // Requer autenticação
-    @Get('/services/list', isAuthenticated)
+    @Get('/services/list')
     async list(req: ExpressRequest, res: Response) {
         const services = await listServices();
         this.sendResponse(res, services);
